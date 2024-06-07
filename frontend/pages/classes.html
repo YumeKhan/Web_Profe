@@ -33,12 +33,11 @@
                 <!-- Linhas de alunos serão adicionadas dinamicamente -->
             </table>
             <div class="buttons-container">
-                <button class="atualizar-button">ATUALIZAR NOTAS</button>
                 <button class="adicionar-alunos-button">ADICIONAR MAIS ALUNOS</button>
             </div>
         </section>
         <section class="faltas">
-            <h2><img src="../frontend/png/icon-faltas.png" alt="Faltas Icon"> Faltas</h2>
+            <h2><img src="../png/icon-faltas.png" alt="Faltas Icon"> Faltas</h2>
             <table>
                 <tr>
                     <th>Alunos</th>
@@ -46,6 +45,7 @@
                     <th>2º Bimestre</th>
                     <th>3º Bimestre</th>
                     <th>4º Bimestre</th>
+                    
                 </tr>
                 <!-- Linhas de alunos serão adicionadas dinamicamente -->
             </table>
@@ -57,88 +57,6 @@
     
     <script src="../js/classes.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            
-            // Seletores dos botões e tabelas
-            const atualizarButton = document.querySelector('.atualizar-button');
-            const editarButton = document.querySelector('.editar-button');
-            const adicionarAlunosButton = document.querySelector('.adicionar-alunos-button');
-            const notasTable = document.querySelector('.notas table');
-            const faltasTable = document.querySelector('.faltas table');
-
-            // Função para adicionar linha à tabela
-            function adicionarLinha(tabela, aluno, notas) {
-                const newRow = tabela.insertRow();
-                newRow.insertCell().textContent = aluno;
-                notas.forEach(nota => {
-                    const newCell = newRow.insertCell();
-                    newCell.innerHTML = `<input type="text" value="${nota}">`;
-                });
-                const deleteCell = newRow.insertCell();
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Excluir';
-                deleteButton.addEventListener('click', function() {
-                    newRow.remove();
-                    salvarDados();
-                });
-                deleteCell.appendChild(deleteButton);
-                
-            }
-
-            // Função para carregar dados do localStorage
-            function carregarDados() {
-                const notasData = JSON.parse(localStorage.getItem('notasData')) || [];
-                const faltasData = JSON.parse(localStorage.getItem('faltasData')) || [];
-
-                notasData.forEach(dado => adicionarLinha(notasTable, dado.aluno, dado.notas));
-                faltasData.forEach(dado => adicionarLinha(faltasTable, dado.aluno, dado.faltas));
-            }
-
-            // Função para salvar dados no localStorage
-            function salvarDados() {
-                const notasData = Array.from(notasTable.rows)
-                    .slice(1)
-                    .map(row => ({
-                        aluno: row.cells[0].textContent,
-                        notas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-                    }));
-                const faltasData = Array.from(faltasTable.rows)
-                    .slice(1)
-                    .map(row => ({
-                        aluno: row.cells[0].textContent,
-                        faltas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-                    }));
-
-                localStorage.setItem('notasData', JSON.stringify(notasData));
-                localStorage.setItem('faltasData', JSON.stringify(faltasData));
-            }
-
-            // Adicionar evento de clique ao botão de adicionar mais alunos
-            adicionarAlunosButton.addEventListener('click', function() {
-                const aluno = prompt('Digite o nome do aluno:');
-                if (aluno) {
-                    adicionarLinha(notasTable, aluno, ['', '', '', '']);
-                    adicionarLinha(faltasTable, aluno, ['', '', '', '']);
-                    salvarDados();
-                }
-            });
-
-            // Adicionar evento de clique ao botão de atualizar notas
-            atualizarButton.addEventListener('click', function() {
-                salvarDados();
-            });
-
-            // Adicionar evento de clique ao botão de editar faltas
-            editarButton.addEventListener('click', function() {
-                console.log("Editando faltas...");
-                // Aqui você pode implementar a lógica para editar as faltas
-            });
-
-            carregarDados();
-        });
-
-    </script>
 </body>
 <footer>
     <p class="creditos">Desenvolvido por ©Déborah Iara - 2024.</p>

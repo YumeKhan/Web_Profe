@@ -50,6 +50,7 @@ header {
     border-radius: 15px;
 }
 
+
 main {
     display: center;
     flex-wrap: wrap; /* Nova adição para permitir que os elementos sejam envolvidos */
@@ -89,7 +90,7 @@ h2 {
 
 }
 
-.search-table th {
+.result-table th {
     background-color: #7b80ca57;
     
 }

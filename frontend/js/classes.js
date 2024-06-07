@@ -1,4 +1,48 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // ... (restante do código JavaScript) ...
+
+    // Função para adicionar linha com botões de editar e excluir
+    function adicionarLinha(tabela, aluno, dados) {
+        const newRow = tabela.insertRow();
+        newRow.insertCell().textContent = aluno.nome + ' ' + aluno.sobrenome;
+        dados.forEach(dado => {
+            const newCell = newRow.insertCell();
+            newCell.innerHTML = `<input type="text" value="${dado}">`;
+        });
+
+        // Célula para os botões de editar e excluir
+        const actionCell = newRow.insertCell();
+
+        // Botão de editar com ícone
+        const editButton = document.createElement('button');
+        editButton.classList.add('edit-button');
+        editButton.innerHTML = '<img src="../png/excluir.png" alt="Editar">';
+        editButton.addEventListener('click', function () {
+            // Lógica para editar o aluno
+            console.log('Editando aluno:', aluno.nome + ' ' + aluno.sobrenome);
+        });
+        actionCell.appendChild(editButton);
+
+        // Botão de excluir com ícone
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('delete-button');
+        deleteButton.innerHTML = '<img src="../png/excluir.png" alt="Excluir">';
+        deleteButton.addEventListener('click', function () {
+            // Lógica para excluir o aluno
+            if (confirm('Tem certeza de que deseja excluir este aluno?')) {
+                newRow.remove();
+                salvarDados();
+            }
+        });
+        actionCell.appendChild(deleteButton);
+    }
+
+    // ... (restante do código JavaScript) ...
+
+    carregarDados();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
     const menuIcon = document.querySelector('.menu-icon');
     const headerButtons = document.querySelector('.header-buttons');
 
@@ -160,6 +204,86 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Editando faltas...");
         });
     }
+
+    carregarDados();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+            
+    // Seletores dos botões e tabelas
+    const atualizarButton = document.querySelector('.atualizar-button');
+    const editarButton = document.querySelector('.editar-button');
+    const adicionarAlunosButton = document.querySelector('.adicionar-alunos-button');
+    const notasTable = document.querySelector('.notas table');
+    const faltasTable = document.querySelector('.faltas table');
+
+    // Função para adicionar linha à tabela
+    function adicionarLinha(tabela, aluno, notas) {
+        const newRow = tabela.insertRow();
+        newRow.insertCell().textContent = aluno;
+        notas.forEach(nota => {
+            const newCell = newRow.insertCell();
+            newCell.innerHTML = `<input type="text" value="${nota}">`;
+        });
+        const deleteCell = newRow.insertCell();
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Excluir'; 
+        deleteButton.addEventListener('click', function() {
+            newRow.remove();
+            salvarDados();
+        });
+        deleteCell.appendChild(deleteButton);
+
+    }
+
+    // Função para carregar dados do localStorage
+    function carregarDados() {
+        const notasData = JSON.parse(localStorage.getItem('notasData')) || [];
+        const faltasData = JSON.parse(localStorage.getItem('faltasData')) || [];
+
+        notasData.forEach(dado => adicionarLinha(notasTable, dado.aluno, dado.notas));
+        faltasData.forEach(dado => adicionarLinha(faltasTable, dado.aluno, dado.faltas));
+    }
+
+    // Função para salvar dados no localStorage
+    function salvarDados() {
+        const notasData = Array.from(notasTable.rows)
+            .slice(1)
+            .map(row => ({
+                aluno: row.cells[0].textContent,
+                notas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
+            }));
+        const faltasData = Array.from(faltasTable.rows)
+            .slice(1)
+            .map(row => ({
+                aluno: row.cells[0].textContent,
+                faltas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
+            }));
+
+        localStorage.setItem('notasData', JSON.stringify(notasData));
+        localStorage.setItem('faltasData', JSON.stringify(faltasData));
+    }
+
+    // Adicionar evento de clique ao botão de adicionar mais alunos
+    adicionarAlunosButton.addEventListener('click', function() {
+        const aluno = prompt('Digite o nome do aluno:');
+        if (aluno) {
+            adicionarLinha(notasTable, aluno, ['', '', '', '']);
+            adicionarLinha(faltasTable, aluno, ['', '', '', '']);
+            salvarDados();
+        }
+    });
+
+    // Adicionar evento de clique ao botão de atualizar notas
+    atualizarButton.addEventListener('click', function() {
+        salvarDados();
+    });
+
+    // Adicionar evento de clique ao botão de editar faltas
+    editarButton.addEventListener('click', function() {
+        console.log("Editando faltas...");
+        // Aqui você pode implementar a lógica para editar as faltas
+    });
 
     carregarDados();
 });

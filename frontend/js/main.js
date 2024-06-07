@@ -12,6 +12,7 @@ function showForm(formId) {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
     const forgotPasswordForm = document.getElementById('forgotPasswordForm');
     if (forgotPasswordForm) {

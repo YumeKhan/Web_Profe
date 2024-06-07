@@ -1,17 +1,20 @@
 <?php
-require_once '../controllers/authController.php';
+// auth.php
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = $_GET['action'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $email = $data['email'];
+    $password = $data['password'];
 
-    $input = json_decode(file_get_contents('php://input'), true);
-    
-    if ($action == 'register') {
-        echo register($input['name'], $input['email'], $input['password']);
-    } elseif ($action == 'login') {
-        echo login($input['email'], $input['password']);
-    } elseif ($action == 'recover') {
-        echo recover($input['email']);
-    }
+    // Aqui você validaria as credenciais do usuário, por exemplo, consultando um banco de dados.
+    // Por questões de segurança, use funções de hash e verificação adequadas.
+
+    // Exemplo de resposta
+    $response = array(
+        'status' => 'success', // ou 'error' se as credenciais estiverem incorretas
+        'message' => 'Login realizado com sucesso!' // ou uma mensagem de erro apropriada
+    );
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
-?>

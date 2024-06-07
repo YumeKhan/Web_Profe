@@ -21,12 +21,7 @@
         <section class="pesquisa-alunos">
             <h2><img src="../png/1.png" alt="Alunos Icon"> Pesquisa de alunos</h2>
             <table class="search-table">
-                <tr>
-                    <th>Nome</th>
-                    <th>Sobrenome</th>
-                    <th>Email</th>
-                    <th>Telefone</th>
-                </tr>
+                
             </table>
             <table class="result-table">
                 <tr>
@@ -36,7 +31,6 @@
                     <th>Nascimento</th>
                     <th>Email</th>
                     <th>Telefone</th>
-                    <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
                 <!-- As linhas dos alunos serão adicionadas dinamicamente aqui -->
@@ -53,86 +47,6 @@
 
     <script src="../js/matricula de alunos.js"></script>
     
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Carrega os dados do localStorage
-            const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
-
-            // Seleciona a tabela onde os alunos serão exibidos
-            const resultTable = document.querySelector('.result-table');
-
-            // Exibe cada aluno na tabela
-            alunos.forEach(aluno => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><img src="../frontend/png/icon-user.png" alt="User Icon"></td>
-                    <td>${aluno.nome}</td>
-                    <td>${aluno.sobrenome}</td>
-                    <td>${aluno.dataNascimento}</td>
-                    <td>${aluno.email}</td>
-                    <td>${aluno.telefone}</td>
-                    <td><button class="edit-button" data-id="${aluno.id}">Editar</button></td>
-                    <td><button class="delete-button" data-id="${aluno.id}">Excluir</button></td>
-                `;
-                resultTable.appendChild(row);
-            });
-
-            // Adiciona eventos aos botões de excluir
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    if (confirm('Tem certeza de que deseja excluir este aluno?')) {
-                        const alunoId = button.dataset.id;
-                        let alunosArray = JSON.parse(localStorage.getItem('alunos')) || [];
-                        alunosArray = alunosArray.filter(a => a.id !== alunoId);
-                        localStorage.setItem('alunos', JSON.stringify(alunosArray));
-                        button.closest('tr').remove(); // Remove a linha da tabela
-                    }
-                });
-            });
-
-            // Adiciona eventos aos botões de editar
-            document.querySelectorAll('.edit-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const alunoId = button.dataset.id;
-                    alert(`Editar aluno com ID: ${alunoId}`);
-                    // Implemente a lógica para editar o aluno aqui
-                });
-            });
-        });
-
-        // Adiciona evento ao botão de logout para redirecionar para index.html
-        document.querySelector('.logout-button').addEventListener('click', function () {
-            window.location.href = 'index.html';
-        });
-
-        // Adiciona evento ao botão de professores para redirecionar para cadastro de professores
-        document.querySelector('.proprof-button').addEventListener('click', function () {
-            window.location.href = 'cadastro de professores.html';
-        });
-
-        // Adiciona evento ao botão de inserir alunos para redirecionar para inserir alunos.html
-        document.querySelector('.proinserir-button').addEventListener('click', function () {
-            window.location.href = 'inserir alunos.html';
-        });
-
-        // Adiciona evento ao botão de classes para redirecionar para classes.html
-        document.querySelector('.proclasses-button').addEventListener('click', function () {
-            window.location.href = 'classes.html';
-        });
-
-        // Adiciona evento ao botão de matrícula de alunos para redirecionar para matricula de alunos.html
-        document.querySelector('.promatri-button').addEventListener('click', function () {
-            window.location.href = 'matricula de alunos.html';
-        });
-
-        // Evento para adicionar um novo aluno
-        const addStudentButton = document.querySelector('.add-student-button');
-        addStudentButton.addEventListener('click', function () {
-            // Implemente a lógica para adicionar um novo aluno aqui
-            // Por exemplo, redirecionar para a página de cadastro de alunos
-            window.location.href = 'cadastro_alunos.php';
-        });
-    </script>
     <footer>
         <p class="creditos">Desenvolvido por ©Déborah Iara - 2024.</p>
     </footer>
