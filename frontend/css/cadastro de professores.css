@@ -1,0 +1,172 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../png/fundo.png');
+    background-size: cover; /* para ajustar o tamanho da imagem */
+    background-position: auto; /* para posicionar a imagem */
+    text-align: center;   
+}
+
+header {
+    background-color: #874caf;
+    color: white;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-radius: 10px;
+ 
+}
+
+.menu-icon {
+    font-size: 24px;
+    
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    
+}
+
+.proclasses-button, .profile-button, .promatri-button, .proinserir-button, .logout-button, .update-button {
+    background-color: #000000a1;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    
+}
+
+.proprof-button {
+    background-color: #d44040a1;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+
+main {
+    display: center;
+    flex-wrap: wrap; /* Nova adição para permitir que os elementos sejam envolvidos */
+    justify-content: space-around;
+    padding: 20px;
+    
+}
+
+section {
+    background-color: rgba(255, 255, 255, 0.815);
+    border-radius: 20px;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    padding: 20px;
+    margin-top: 2%;
+    margin-bottom: 100px; /* Nova adição para criar espaço entre as seções */
+    
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    
+}
+
+th {
+    background-color: #7b80ca57;
+}
+
+input[type="text"] {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.search-table, .result-table {
+    width: 100%;
+    margin-top: 20px;
+    
+}
+
+.search-table th, .result-table th, .result-table td {
+    border: 2px solid #00000010;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+
+}
+
+.search-table th {
+    background-color: #7b80ca57;
+    
+}
+
+.result-table img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination button {
+    background-color: #874caf;
+    border: none;
+    color: #000000;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px rgb(0, 0, 0); /* Adiciona sombra */
+    border-radius: 20px;
+    margin: 0 2px;
+    
+}
+
+.pagination span {
+    padding: 10px 15px;
+    
+}
+
+.atualizar-button {
+    font-family: Arial, sans-serif;
+    background-color: #d32f2f;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-top: 15px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.creditos {
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    color: #00e1ff;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    /* Estilos para telas menores */
+    main {
+        flex-direction: column; /* Alterado para empilhar seções em telas menores */
+        align-items: center; /* Centralizar seções em telas menores */
+    }
+
+    section {
+        width: 90%; /* Alterado para ocupar a largura total em telas menores */
+    }
+}

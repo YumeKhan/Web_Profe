@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa de Alunos</title>
+    <link rel="stylesheet" href="../frontend/css/matricula de alunos.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <header>
+        <div class="menu-icon"><img src="../frontend/png/Logo.png"></div>
+        <div class="header-buttons">
+            <button class="proprof-button">PROFESSORES</button>
+            <button class="proinserir-button">INSERIR ALUNOS</button>
+            <button class="promatri-button">ALUNOS</button>
+            <button class="proclasses-button">CLASSES</button>
+            <button class="logout-button">SAIR</button>
+        </div>
+    </header>
+    <main>
+        <section class="pesquisa-alunos">
+            <h2><img src="../frontend/png/1.png" alt="Alunos Icon"> Pesquisa de alunos</h2>
+            <table class="search-table">
+                <tr>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                </tr>
+            </table>
+            <table class="result-table">
+                <tr>
+                    <th></th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Nascimento</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+                <!-- As linhas dos alunos serão adicionadas dinamicamente aqui -->
+            </table>
+            <div class="pagination">
+                <button disabled>&laquo;</button>
+                <button disabled>&lsaquo;</button>
+                <span>1</span>
+                <button disabled>&rsaquo;</button>
+                <button disabled>&raquo;</button>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Carrega os dados do localStorage
+            const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
+
+            // Seleciona a tabela onde os alunos serão exibidos
+            const resultTable = document.querySelector('.result-table');
+
+            // Exibe cada aluno na tabela
+            alunos.forEach(aluno => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="../frontend/png/icon-user.png" alt="User Icon"></td>
+                    <td>${aluno.nome}</td>
+                    <td>${aluno.sobrenome}</td>
+                    <td>${aluno.dataNascimento}</td>
+                    <td>${aluno.email}</td>
+                    <td>${aluno.telefone}</td>
+                    <td><button class="edit-button" data-id="${aluno.id}">Editar</button></td>
+                    <td><button class="delete-button" data-id="${aluno.id}">Excluir</button></td>
+                `;
+                resultTable.appendChild(row);
+            });
+
+            // Adiciona eventos aos botões de editar e excluir
+            document.querySelectorAll('.edit-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    // Implemente a lógica para editar o aluno
+                    // Por exemplo, redirecionar para a página de edição com o ID do aluno
+                    const alunoId = button.dataset.id;
+                    window.location.href = `../frontend/matricula de alunos.html?id=${alunoId}`;
+                });
+            });
+
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    // Implemente a lógica para excluir o aluno
+                    // Por exemplo, remover o aluno do localStorage e da tabela
+                    const alunoId = button.dataset.id;
+                    const alunosArray = JSON.parse(localStorage.getItem('alunos')) || [];
+                    const updatedAlunos = alunosArray.filter(a => a.id !== alunoId);
+                    localStorage.setItem('alunos', JSON.stringify(updatedAlunos));
+                    button.closest('tr').remove();
+                });
+            });
+        });
+    </script>
+
+    <script src="/frontend/js/matricula de alunos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        
+        // Adiciona evento ao botão de logout para redirecionar para index.html
+        const logoutButton = document.querySelector('.logout-button');
+        logoutButton.addEventListener('click', function () {
+            window.location.href = 'index.html';
+        });
+
+        // Adiciona evento ao botão de professores para redirecionar para cadastro de professores
+        const profButton = document.querySelector('.proprof-button');
+        profButton.addEventListener('click', function () {
+            window.location.href = 'cadastro de professores.html';
+        });
+
+        // Adiciona evento ao botão de inserir alunos para redirecionar para inserir alunos.html
+        const inserirButton = document.querySelector('.proinserir-button');
+        inserirButton.addEventListener('click', function () {
+            window.location.href = 'inserir alunos.html';
+        });
+
+        // Adiciona evento ao botão de classes para redirecionar para classes.html
+        const classesButton = document.querySelector('.proclasses-button');
+        classesButton.addEventListener('click', function () {
+            window.location.href = 'classes.html';
+        });
+
+        // Adiciona evento ao botão de matrícula de alunos para redirecionar para matricula de alunos.html
+        const matriButton = document.querySelector('.promatri-button');
+        matriButton.addEventListener('click', function () {
+            window.location.href = 'matricula de alunos.html';
+        });
+
+        // Evento para adicionar um novo aluno
+        const addStudentButton = document.querySelector('.add-student-button');
+        addStudentButton.addEventListener('click', function () {
+            // Implemente a lógica para adicionar um novo aluno aqui
+            // Por exemplo, redirecionar para a página de cadastro de alunos
+            window.location.href = 'cadastro_alunos.php';
+        });
+    </script>
+
+    
+
+    <footer>
+        <p class="creditos">Desenvolvido por ©Déborah Iara - 2024.</p>
+    </footer>
+</body>
+</html>

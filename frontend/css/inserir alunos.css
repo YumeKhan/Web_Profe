@@ -1,0 +1,161 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../png/fundo1.png');
+    background-size: cover; /* para ajustar o tamanho da imagem */
+    background-position: auto; /* para posicionar a imagem */
+    text-align: center;   
+}
+
+header {
+    background-color: #874caf;
+    color: white;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-radius: 10px;
+ 
+}
+.menu-icon {
+    font-size: 24px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    
+}
+
+.proclasses-button, .profile-button, .promatri-button, .proprof-button, .logout-button, .update-button {
+    background-color: #000000a1;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    
+}
+
+.proinserir-button {
+    background-color: #d44040a1;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+main {
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap; /* Nova adição para permitir que os elementos sejam envolvidos */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+section {
+    background-color: rgba(255, 255, 255, 0.815);
+    border-radius: 20px;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    padding: 20px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -15%;
+    margin-bottom: 100px; /* Nova adição para criar espaço entre as seções */
+}
+
+h2 {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+        
+}
+
+p {
+    margin-bottom: 20px;
+    text-align: center;
+    
+}
+
+form {
+    width: 100%;
+    
+}
+
+.form-group {
+    padding: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+    
+}
+
+.form-group label {
+    flex-basis: 45%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 15px;
+    box-shadow: 0 0 0 0.1px rgb(0, 0, 0); /* Adiciona sombra */
+    display: center;
+
+
+}
+
+.form-group input {
+    flex-basis: 45%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    display: center;
+
+
+}
+
+.cadastrar-button {
+    font-family: Arial, sans-serif;
+    background-color: #874caf;
+    border: none;
+    color: white;
+    margin-top: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    border-radius: 20px;
+    width: 70%;
+    text-align: center;
+    
+}
+
+
+.creditos {
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    color: #00e1ff;
+    text-align: center;
+    margin-top: -350px;
+}
+
+@media (max-width: 768px) {
+    /* Estilos para telas menores */
+    main {
+        flex-direction: column; /* Alterado para empilhar seções em telas menores */
+        align-items: center; /* Centralizar seções em telas menores */
+    }
+
+    section {
+        width: 90%; /* Alterado para ocupar a largura total em telas menores */
+    }
+}

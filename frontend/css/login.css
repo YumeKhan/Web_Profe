@@ -1,0 +1,177 @@
+/* relogio.css */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap');
+
+.relogio-container {
+    display: flex;
+    justify-content: center; /* Ajustado para centralizar */
+    margin-bottom: 30px; /* Ajustado para espaçamento positivo */
+}
+
+.relogio {
+    display: flex;
+    justify-content: space-around;
+    height: 200px;
+    width: 90vw; /* Ajustado para ser responsivo */
+    max-width: 400px; /* Limitando a largura máxima */
+    background: transparent;
+    border-radius: 3px;
+    align-items: center;
+}
+
+.relogio div {
+    height: 100px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(5, 5, 5, 0.342);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, .7);
+    border-radius: 7px;
+    letter-spacing: 3px;
+}
+
+.relogio span {
+    font-weight: bolder;
+    font-size: 60px;
+}
+
+.relogio span.tempo {
+    font-size: 10px;
+}
+
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-image: url('../png/fundo2.png');
+    background-size: cover; /* para ajustar o tamanho da imagem */
+    background-position: auto; /* para posicionar a imagem */
+    
+}
+
+header {
+    margin: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: relative; /* Define a posição relativa para permitir o posicionamento absoluto da logo */
+ 
+}
+
+.menu-icon {
+    margin-left: -2600%;
+
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    max-width: 1200px;
+    background-color: rgba(248, 248, 248, 0.6);
+}
+
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tab {
+    background: #e4dcef;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.tab:hover {
+    background: #d1c1e0;
+}
+
+.form-container h1 {
+    color: #5d5474;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6a6483;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin: 0;
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #957dad;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #805d9a;
+}
+
+a {
+    text-decoration: none;
+    color: #957dad;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Media queries for responsiveness */
+@media screen and (min-width: 576px) {
+    .container, .relogio {
+        width: 70vw;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .container, .relogio {
+        width: 60vw;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .container, .relogio {
+        width: 50vw;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .container, .relogio {
+        width: 40vw;
+    }
+}
+
+.creditos {
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    color: #00e1ff;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
