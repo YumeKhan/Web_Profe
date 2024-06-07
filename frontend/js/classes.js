@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const inserirButton = document.querySelector('.proinserir-button');
     const classesButton = document.querySelector('.proclasses-button');
     const matriButton = document.querySelector('.promatri-button');
-    const addStudentButton = document.querySelector('.add-student-button');
 
     if (logoutButton) {
         logoutButton.addEventListener('click', function () {

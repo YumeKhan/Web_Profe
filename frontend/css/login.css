@@ -65,6 +65,7 @@ header {
 
 .menu-icon {
     margin-left: -2600%;
+    display: flex;
 
 }
 

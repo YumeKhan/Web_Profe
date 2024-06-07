@@ -1,32 +1,27 @@
-<?php
-require 'backend/scripts/db_connection.php';
-
-$stmt = $pdo->query('SELECT * FROM professores');
-$professores = $stmt->fetchAll();
-?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesquisa de Professores Adicionados</title>
-    <link rel="stylesheet" href="frontend/css/cadastro_de_professores.css">
+    <link rel="stylesheet" href="../css/cadastro de professores.css">
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
     <header>
-        <div class="menu-icon">☰</div>
+        <div class="menu-icon"><img src="../png/Logo.png"></div>
         <div class="header-buttons">
-            <button class="profile-button">PERFIL</button>
             <button class="proprof-button">PROFESSORES</button>
+            <button class="proinserir-button">INSERIR ALUNOS</button>
+            <button class="promatri-button">ALUNOS</button>
             <button class="proclasses-button">CLASSES</button>
             <button class="logout-button">SAIR</button>
         </div>
     </header>
     <main>
         <section class="pesquisa-professores">
-            <h2><img src="frontend/png/icon-professores.png" alt="Professores Icon"> Pesquisa de professores adicionados</h2>
+            <h2><img src="../png/icon-professores.png" alt="Professores Icon"> Pesquisa de professores adicionados</h2>
             
             <table class="result-table">
                 <tr>
@@ -37,20 +32,26 @@ $professores = $stmt->fetchAll();
                     <th>Nascimento</th>
                     <th>Email</th>
                     <th>Telefone</th>
-                    <th>Ações</th>
                 </tr>
-                <?php foreach ($professores as $professor): ?>
-                    <tr>
-                        <td><img src="frontend/png/icon-adm.png" alt="Adm Icon"></td>
-                        <td><input type="text" value="<?php echo htmlspecialchars($professor['nome']); ?>"></td>
-                        <td><input type="text" value="<?php echo htmlspecialchars($professor['sobrenome']); ?>"></td>
-                        <td><input type="text" value="<?php echo htmlspecialchars($professor['disciplina']); ?>"></td>
-                        <td><input type="date" value="<?php echo htmlspecialchars($professor['nascimento']); ?>"></td>
-                        <td><input type="email" value="<?php echo htmlspecialchars($professor['email']); ?>"></td>
-                        <td><input type="text" value="<?php echo htmlspecialchars($professor['telefone']); ?>"></td>
-                        <td><button class="update-button" data-id="<?php echo $professor['id']; ?>">Atualizar</button></td>
-                    </tr>
-                <?php endforeach; ?>
+                <tr>
+                    <td><img src="../png/icon-adm.png" alt="Adm Icon"></td>
+                    <td>Fudência</td>
+                    <td>Fulano</td>
+                    <td>Redes</td>
+                    <td>28/01/2001</td>
+                    <td>aluno@admin.com</td>
+                    <td>00 0 0000 - 0000</td>
+                </tr>
+                <tr>
+                    <td><img src="../png/icon-user.png" alt="User Icon"></td>
+                    <td>Fudêncio</td>
+                    <td>Fulano</td>
+                    <td>Banco de dados</td>
+                    <td>28/01/2001</td>
+                    <td>aluno@admin.com</td>
+                    <td>00 0 0000 - 0000</td>
+                </tr>
+                <!-- Adicione mais linhas conforme necessário -->
             </table>
             <div class="pagination">
                 <button disabled>&laquo;</button>
@@ -62,6 +63,8 @@ $professores = $stmt->fetchAll();
         </section>
     </main>
 
+    <script src="../js/cadastro de professores.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const menuIcon = document.querySelector('.menu-icon');
@@ -71,23 +74,37 @@ $professores = $stmt->fetchAll();
                 headerButtons.classList.toggle('show');
             });
 
+            // Adiciona evento ao botão de logout para redirecionar para index.html
             const logoutButton = document.querySelector('.logout-button');
             logoutButton.addEventListener('click', function () {
-                window.location.href = 'index.php';
+                window.location.href = 'index.html';
             });
 
+            // Adiciona evento ao botão de classes para redirecionar para classes.html
             const classesButton = document.querySelector('.proclasses-button');
             classesButton.addEventListener('click', function () {
-                window.location.href = 'classes.php';
+                window.location.href = 'classes.html';
             });
 
-            const updateButtons = document.querySelectorAll('.update-button');
+            // Adiciona evento ao botão de inserir alunos para redirecionar para inserir alunos.html
+            const inserirButton = document.querySelector('.proinserir-button');
+            inserirButton.addEventListener('click', function () {
+                window.location.href = 'inserir alunos.html';
+            });
+
+            // Adiciona evento ao botão de matrícula de alunos para redirecionar para matricula de alunos.html
+            const matriButton = document.querySelector('.promatri-button');
+            matriButton.addEventListener('click', function () {
+                window.location.href = 'matricula de alunos.html';
+            });
+
+            // Adiciona evento aos botões de atualizar
+            const updateButtons = document.querySelectorAll('.atualizar-button');
             updateButtons.forEach(button => {
                 button.addEventListener('click', function () {
                     const row = button.parentNode.parentNode;
                     const inputs = row.querySelectorAll('input');
                     const data = {
-                        id: button.dataset.id,
                         nome: inputs[0].value,
                         sobrenome: inputs[1].value,
                         disciplina: inputs[2].value,
@@ -95,19 +112,9 @@ $professores = $stmt->fetchAll();
                         email: inputs[4].value,
                         telefone: inputs[5].value
                     };
-                    fetch('backend/scripts/update_professores.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert('Dados atualizados com sucesso!');
-                        }
-                    });
+                    console.log('Dados atualizados:', data);
+                    alert('Dados atualizados com sucesso');
+                    // Envie a atualização para o backend aqui, se necessário.
                 });
             });
         });

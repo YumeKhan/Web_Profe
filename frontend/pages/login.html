@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Cadastro</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/relogio.css">
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="menu-icon"><img src="../png/Logo.png"></div>
+    </header>
+    <div class="relogio-container">
+        <div class="relogio">
+            <div>
+                <span id="horas">00</span>
+                <span class="tempo">Horas</span>
+            </div>
+            <div>
+                <span id="minutos">00</span>
+                <span class="tempo">Minutos</span>
+            </div>
+            <div>
+                <span id="segundos">00</span>
+                <span class="tempo">Segundos</span>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab" onclick="showForm('login-section')">Login</button>
+            <button class="tab" onclick="showForm('register-section')">Cadastro</button>
+            <button class="tab" onclick="showForm('reset-password-section')">Esqueceu a senha?</button>
+        </div>
+
+        <div id="login-section" class="form-container">
+            <h1>Login</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Senha:</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+
+        <div id="register-section" class="form-container" style="display:none;">
+            <h1>Cadastro</h1>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="new-username">Usuário:</label>
+                    <input type="text" id="new-username" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-email">E-mail:</label>
+                    <input type="email" id="new-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Senha:</label>
+                    <input type="password" id="new-password" name="password" required>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+
+        <div id="reset-password-section" class="form-container" style="display:none;">
+            <h1>Esqueci a Senha</h1>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="forgot-email">E-mail:</label>
+                    <input type="email" id="forgot-email" name="email" required>
+                </div>
+                <button type="submit">Enviar E-mail de Recuperação</button>
+            </form>
+            <p id="success-message" style="display:none; color: green;">E-mail de recuperação enviado com sucesso!</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('http://localhost/backend/routes/auth.php?action=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+            if (data.message) {
+                alert('Login successful');
+                window.location.href = 'classes.html';
+            } else {
+                alert('Login failed: ' + data.error);
+            }
+        });
+        </script>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/relogio.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtZgmv-zjcGpR8Jbycql5nU6dyqVfw0rk",
+            authDomain: "banco-de-dados-dc138.firebaseapp.com",
+            projectId: "banco-de-dados-dc138",
+            storageBucket: "banco-de-dados-dc138.appspot.com",
+            messagingSenderId: "1067288572664",
+            appId: "1:1067288572664:web:260974fab14837d6a1810d",
+            measurementId: "G-ELQB3PJPCJ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        function showForm(formId) {
+            const forms = document.getElementsByClassName('form-container');
+            for (let form of forms) {
+                form.style.display = 'none';
+            }
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+                window.location.href = "classes.html";
+            } catch (error) {
+                console.error('Login failed:', error);
+                alert('Login failed: ' + error.message);
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('new-username').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+
+            try {
+                await firebase.auth().createUserWithEmailAndPassword(email, password);
+                // Adicione o nome do usuário ao perfil
+                const user = firebase.auth().currentUser;
+                await user.updateProfile({ displayName: name });
+                alert('Registration successful');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Registration failed:', error);
+                alert('Registration failed: ' + error.message);
+            }
+        });
+
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+
+            try {
+                await firebase.auth().sendPasswordResetEmail(email);
+                document.getElementById('success-message').style.display = 'block';
+            } catch (error) {
+                console.error('Error sending password reset email:', error);
+                alert('Error sending password reset email: ' + error.message);
+            }
+        });
+    </script>
+</body>
+    <footer>
+        <p class="creditos">Desenvolvido por ©Déborah Iara - 2024.</p>
+    </footer>
+</html>

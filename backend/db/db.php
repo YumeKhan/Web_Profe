@@ -1,9 +1,8 @@
 <?php
-// /backend/db/db.php
 $host = 'localhost';
-$db = 'escola';
+$db = 'professorDB';
 $user = 'root';
-$pass = '';
+$pass = 'password';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
