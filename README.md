@@ -19,15 +19,7 @@ Notificações por Email: Envio de notificações automáticas para o email dos 
 
 backend/: Contém os scripts PHP para gerenciamento do banco de dados e controle de lógica de negócio. 
 
-db/: Conexão com o banco de dados. 
-
-controllers/: Controladores para gerenciamento de autenticação, turmas e alunos. 
-
-models/: Modelos que representam as tabelas do banco de dados. 
-
-routes/: Rotas de API para interagir com o frontend. 
-
-utils/: Utilitários, incluindo o envio de emails. 
+db/: Conexão com o banco de dados.  
 
 frontend/: Contém os arquivos HTML, CSS e JavaScript para a interface do usuário. 
 
