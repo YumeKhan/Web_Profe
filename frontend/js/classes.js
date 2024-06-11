@@ -1,48 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // ... (restante do código JavaScript) ...
-
-    // Função para adicionar linha com botões de editar e excluir
-    function adicionarLinha(tabela, aluno, dados) {
-        const newRow = tabela.insertRow();
-        newRow.insertCell().textContent = aluno.nome + ' ' + aluno.sobrenome;
-        dados.forEach(dado => {
-            const newCell = newRow.insertCell();
-            newCell.innerHTML = `<input type="text" value="${dado}">`;
-        });
-
-        // Célula para os botões de editar e excluir
-        const actionCell = newRow.insertCell();
-
-        // Botão de editar com ícone
-        const editButton = document.createElement('button');
-        editButton.classList.add('edit-button');
-        editButton.innerHTML = '<img src="../png/excluir.png" alt="Editar">';
-        editButton.addEventListener('click', function () {
-            // Lógica para editar o aluno
-            console.log('Editando aluno:', aluno.nome + ' ' + aluno.sobrenome);
-        });
-        actionCell.appendChild(editButton);
-
-        // Botão de excluir com ícone
-        const deleteButton = document.createElement('button');
-        deleteButton.classList.add('delete-button');
-        deleteButton.innerHTML = '<img src="../png/excluir.png" alt="Excluir">';
-        deleteButton.addEventListener('click', function () {
-            // Lógica para excluir o aluno
-            if (confirm('Tem certeza de que deseja excluir este aluno?')) {
-                newRow.remove();
-                salvarDados();
-            }
-        });
-        actionCell.appendChild(deleteButton);
-    }
-
-    // ... (restante do código JavaScript) ...
-
-    carregarDados();
-});
-
-document.addEventListener('DOMContentLoaded', function () {
     const menuIcon = document.querySelector('.menu-icon');
     const headerButtons = document.querySelector('.header-buttons');
 
@@ -56,234 +12,112 @@ document.addEventListener('DOMContentLoaded', function () {
     const classesButton = document.querySelector('.proclasses-button');
     const matriButton = document.querySelector('.promatri-button');
 
-    if (logoutButton) {
-        logoutButton.addEventListener('click', function () {
-            window.location.href = 'index.html';
-        });
-    }
-
-    if (profButton) {
-        profButton.addEventListener('click', function () {
-            window.location.href = 'cadastro de professores.html';
-        });
-    }
-
-    if (inserirButton) {
-        inserirButton.addEventListener('click', function () {
-            window.location.href = 'inserir alunos.html';
-        });
-    }
-
-    if (classesButton) {
-        classesButton.addEventListener('click', function () {
-            window.location.href = 'classes.html';
-        });
-    }
-
-    if (matriButton) {
-        matriButton.addEventListener('click', function () {
-            window.location.href = 'matricula de alunos.html';
-        });
-    }
-
-    if (addStudentButton) {
-        addStudentButton.addEventListener('click', function () {
-            window.location.href = 'cadastro_alunos.php';
-        });
-    }
-
-    const form = document.querySelector('form');
-    if (form) {
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const nome = document.getElementById('nome').value;
-            const sobrenome = document.getElementById('sobrenome').value;
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
-            const telefone = document.getElementById('telefone').value;
-            const dataNascimento = document.getElementById('data-nascimento').value;
-
-            console.log('Nome:', nome);
-            console.log('Sobrenome:', sobrenome);
-            console.log('Email:', email);
-            console.log('Senha:', senha);
-            console.log('Telefone:', telefone);
-            console.log('Data de Nascimento:', dataNascimento);
-        });
-    }
-
-    const atualizarButton = document.querySelector('.atualizar-button');
-    const editarButton = document.querySelector('.editar-button');
-    const adicionarAlunosButton = document.querySelector('.adicionar-alunos-button');
-    const notasTable = document.querySelector('.notas table');
-    const faltasTable = document.querySelector('.faltas table');
-
-    function adicionarLinha(tabela, aluno, dados) {
-        const newRow = tabela.insertRow();
-        newRow.insertCell().textContent = aluno.nome + ' ' + aluno.sobrenome;
-        dados.forEach(dado => {
-            const newCell = newRow.insertCell();
-            newCell.innerHTML = `<input type="text" value="${dado}">`;
-        });
-        const deleteCell = newRow.insertCell();
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Excluir';
-        deleteButton.classList.add('delete-button');
-        deleteButton.addEventListener('click', function () {
-            newRow.remove();
-            salvarDados();
-        });
-        deleteCell.appendChild(deleteButton);
-    }
-
-    function carregarDados() {
-        const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
-        const notasData = JSON.parse(localStorage.getItem('notasData')) || [];
-        const faltasData = JSON.parse(localStorage.getItem('faltasData')) || [];
-
-        alunos.forEach(aluno => {
-            let notas = notasData.find(dado => dado.aluno === aluno.nome + ' ' + aluno.sobrenome);
-            if (!notas) {
-                notas = { aluno: aluno.nome + ' ' + aluno.sobrenome, notas: ['', '', '', ''] };
-                notasData.push(notas);
-            }
-            let faltas = faltasData.find(dado => dado.aluno === aluno.nome + ' ' + aluno.sobrenome);
-            if (!faltas) {
-                faltas = { aluno: aluno.nome + ' ' + aluno.sobrenome, faltas: ['', '', '', ''] };
-                faltasData.push(faltas);
-            }
-
-            adicionarLinha(notasTable, aluno, notas.notas);
-            adicionarLinha(faltasTable, aluno, faltas.faltas);
-        });
-
-        localStorage.setItem('notasData', JSON.stringify(notasData));
-        localStorage.setItem('faltasData', JSON.stringify(faltasData));
-    }
-
-    function salvarDados() {
-        const notasData = Array.from(notasTable.rows)
-            .slice(1)
-            .map(row => ({
-                aluno: row.cells[0].textContent,
-                notas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-            }));
-        const faltasData = Array.from(faltasTable.rows)
-            .slice(1)
-            .map(row => ({
-                aluno: row.cells[0].textContent,
-                faltas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-            }));
-
-        localStorage.setItem('notasData', JSON.stringify(notasData));
-        localStorage.setItem('faltasData', JSON.stringify(faltasData));
-    }
-
-    if (adicionarAlunosButton) {
-        adicionarAlunosButton.addEventListener('click', function () {
-            const nome = prompt('Digite o nome do aluno:');
-            const sobrenome = prompt('Digite o sobrenome do aluno:');
-            if (nome && sobrenome) {
-                const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
-                const aluno = { nome, sobrenome };
-                alunos.push(aluno);
-                localStorage.setItem('alunos', JSON.stringify(alunos));
-                carregarDados();
-            }
-        });
-    }
-
-    if (atualizarButton) {
-        atualizarButton.addEventListener('click', function () {
-            salvarDados();
-        });
-    }
-
-    if (editarButton) {
-        editarButton.addEventListener('click', function () {
-            console.log("Editando faltas...");
-        });
-    }
-
-    carregarDados();
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-            
-    // Seletores dos botões e tabelas
-    const atualizarButton = document.querySelector('.atualizar-button');
-    const editarButton = document.querySelector('.editar-button');
-    const adicionarAlunosButton = document.querySelector('.adicionar-alunos-button');
-    const notasTable = document.querySelector('.notas table');
-    const faltasTable = document.querySelector('.faltas table');
-
-    // Função para adicionar linha à tabela
-    function adicionarLinha(tabela, aluno, notas) {
-        const newRow = tabela.insertRow();
-        newRow.insertCell().textContent = aluno;
-        notas.forEach(nota => {
-            const newCell = newRow.insertCell();
-            newCell.innerHTML = `<input type="text" value="${nota}">`;
-        });
-        const deleteCell = newRow.insertCell();
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Excluir'; 
-        deleteButton.addEventListener('click', function() {
-            newRow.remove();
-            salvarDados();
-        });
-        deleteCell.appendChild(deleteButton);
-
-    }
-
-    // Função para carregar dados do localStorage
-    function carregarDados() {
-        const notasData = JSON.parse(localStorage.getItem('notasData')) || [];
-        const faltasData = JSON.parse(localStorage.getItem('faltasData')) || [];
-
-        notasData.forEach(dado => adicionarLinha(notasTable, dado.aluno, dado.notas));
-        faltasData.forEach(dado => adicionarLinha(faltasTable, dado.aluno, dado.faltas));
-    }
-
-    // Função para salvar dados no localStorage
-    function salvarDados() {
-        const notasData = Array.from(notasTable.rows)
-            .slice(1)
-            .map(row => ({
-                aluno: row.cells[0].textContent,
-                notas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-            }));
-        const faltasData = Array.from(faltasTable.rows)
-            .slice(1)
-            .map(row => ({
-                aluno: row.cells[0].textContent,
-                faltas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-            }));
-
-        localStorage.setItem('notasData', JSON.stringify(notasData));
-        localStorage.setItem('faltasData', JSON.stringify(faltasData));
-    }
-
-    // Adicionar evento de clique ao botão de adicionar mais alunos
-    adicionarAlunosButton.addEventListener('click', function() {
-        const aluno = prompt('Digite o nome do aluno:');
-        if (aluno) {
-            adicionarLinha(notasTable, aluno, ['', '', '', '']);
-            adicionarLinha(faltasTable, aluno, ['', '', '', '']);
-            salvarDados();
-        }
+    logoutButton.addEventListener('click', function () {
+        window.location.href = 'login.html';
     });
 
-    // Adicionar evento de clique ao botão de atualizar notas
-    atualizarButton.addEventListener('click', function() {
-        salvarDados();
+    profButton.addEventListener('click', function () {
+        window.location.href = 'cadastro de professores.html';
     });
 
-    // Adicionar evento de clique ao botão de editar faltas
-    editarButton.addEventListener('click', function() {
-        console.log("Editando faltas...");
-        // Aqui você pode implementar a lógica para editar as faltas
+    inserirButton.addEventListener('click', function () {
+        window.location.href = 'inserir alunos.html';
     });
 
-    carregarDados();
+    classesButton.addEventListener('click', function () {
+        window.location.href = 'classes.html';
+    });
+
+    matriButton.addEventListener('click', function () {
+        window.location.href = 'matricula de alunos.html';
+    });
+
+    function preencherTabelaNotas() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText); // Debug
+                var alunos = JSON.parse(this.responseText);
+                var tbodyNotas = document.querySelector(".notas table tbody");
+                var tbodyFaltas = document.querySelector(".faltas table tbody");
+
+                // Limpa as tabelas antes de preenchê-las novamente
+                tbodyNotas.innerHTML = "";
+                tbodyFaltas.innerHTML = "";
+
+                alunos.forEach(function(aluno) {
+                    var trNotas = document.createElement("tr");
+                    var trFaltas = document.createElement("tr");
+
+                    trNotas.innerHTML = `
+                        <td>${aluno.nome} ${aluno.sobrenome}</td>
+                        <td><input type="text" name="bimestre1" value="${aluno.bimestre1 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre1')"></td>
+                        <td><input type="text" name="bimestre2" value="${aluno.bimestre2 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre2')"></td>
+                        <td><input type="text" name="bimestre3" value="${aluno.bimestre3 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre3')"></td>
+                        <td><input type="text" name="bimestre4" value="${aluno.bimestre4 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre4')"></td>
+                    `;
+
+                    trFaltas.innerHTML = `
+                        <td>${aluno.nome} ${aluno.sobrenome}</td>
+                        <td><input type="text" name="falta1" value="${aluno.falta1 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta1')"></td>
+                        <td><input type="text" name="falta2" value="${aluno.falta2 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta2')"></td>
+                        <td><input type="text" name="falta3" value="${aluno.falta3 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta3')"></td>
+                        <td><input type="text" name="falta4" value="${aluno.falta4 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta4')"></td>
+                    `;
+
+                    tbodyNotas.appendChild(trNotas);
+                    tbodyFaltas.appendChild(trFaltas);
+                });
+            } else if (this.readyState == 4) {
+                console.error('Erro ao carregar dados:', this.responseText); // Debug
+            }
+        };
+        xhttp.open("GET", "classes.php", true);
+        xhttp.send();
+    }
+
+    window.atualizarNota = function(input, aluno_id, bimestre) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText); // Debug
+                preencherTabelaNotas();
+            } else if (this.readyState == 4) {
+                console.error('Erro ao atualizar nota:', this.responseText); // Debug
+            }
+        };
+        xhttp.open("POST", "classes.php", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        var data = JSON.stringify({
+            action: "saveNota",
+            aluno_id: aluno_id,
+            bimestre: bimestre,
+            nota: input.value
+        });
+        xhttp.send(data);
+    };
+
+    window.atualizarFalta = function(input, aluno_id, bimestre) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText); // Debug
+                preencherTabelaNotas();
+            } else if (this.readyState == 4) {
+                console.error('Erro ao atualizar falta:', this.responseText); // Debug
+            }
+        };
+        xhttp.open("POST", "classes.php", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        var data = JSON.stringify({
+            action: "saveFalta",
+            aluno_id: aluno_id,
+            bimestre: bimestre,
+            falta: input.value
+        });
+        xhttp.send(data);
+    };
+
+    // Inicializa a tabela de notas e faltas ao carregar a página
+    preencherTabelaNotas();
 });

@@ -12,41 +12,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const classesButton = document.querySelector('.proclasses-button');
     const matriButton = document.querySelector('.promatri-button');
 
-    if (logoutButton) {
-        logoutButton.addEventListener('click', function () {
-            window.location.href = 'index.html';
-        });
-    }
+    logoutButton.addEventListener('click', function () {
+        window.location.href = 'login.html';
+    });
 
-    if (profButton) {
-        profButton.addEventListener('click', function () {
-            window.location.href = 'cadastro de professores.html';
-        });
-    }
+    profButton.addEventListener('click', function () {
+        window.location.href = 'cadastro de professores.html';
+    });
 
-    if (inserirButton) {
-        inserirButton.addEventListener('click', function () {
-            window.location.href = 'inserir alunos.html';
-        });
-    }
+    inserirButton.addEventListener('click', function () {
+        window.location.href = 'inserir alunos.html';
+    });
 
-    if (classesButton) {
-        classesButton.addEventListener('click', function () {
-            window.location.href = 'classes.html';
-        });
-    }
+    classesButton.addEventListener('click', function () {
+        window.location.href = 'classes.html';
+    });
 
-    if (matriButton) {
-        matriButton.addEventListener('click', function () {
-            window.location.href = 'matricula de alunos.html';
-        });
-    }
-
-    if (addStudentButton) {
-        addStudentButton.addEventListener('click', function () {
-            window.location.href = 'cadastro_alunos.php';
-        });
-    }
+    matriButton.addEventListener('click', function () {
+        window.location.href = 'matricula de alunos.html';
+    });
 
     const form = document.querySelector('form');
     if (form) {
@@ -65,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Senha:', senha);
             console.log('Telefone:', telefone);
             console.log('Data de Nascimento:', dataNascimento);
+
+            // Aqui você pode enviar os dados do aluno para o servidor
+            // usando uma requisição AJAX ou outra técnica
         });
     }
 
@@ -87,158 +74,80 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.classList.add('delete-button');
         deleteButton.addEventListener('click', function () {
             newRow.remove();
-            salvarDados();
+            // salvarDados(); // Comentei essa linha porque a função salvarDados não foi fornecida
         });
         deleteCell.appendChild(deleteButton);
     }
 
-    function carregarDados() {
-        const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
-        const notasData = JSON.parse(localStorage.getItem('notasData')) || [];
-        const faltasData = JSON.parse(localStorage.getItem('faltasData')) || [];
-
-        alunos.forEach(aluno => {
-            let notas = notasData.find(dado => dado.aluno === aluno.nome + ' ' + aluno.sobrenome);
-            if (!notas) {
-                notas = { aluno: aluno.nome + ' ' + aluno.sobrenome, notas: ['', '', '', ''] };
-                notasData.push(notas);
+    // Função para carregar os alunos do banco de dados
+    function carregarAlunos() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var alunos = JSON.parse(this.responseText);
+                preencherTabela(alunos);
             }
-            let faltas = faltasData.find(dado => dado.aluno === aluno.nome + ' ' + aluno.sobrenome);
-            if (!faltas) {
-                faltas = { aluno: aluno.nome + ' ' + aluno.sobrenome, faltas: ['', '', '', ''] };
-                faltasData.push(faltas);
-            }
-
-            adicionarLinha(notasTable, aluno, notas.notas);
-            adicionarLinha(faltasTable, aluno, faltas.faltas);
-        });
-
-        localStorage.setItem('notasData', JSON.stringify(notasData));
-        localStorage.setItem('faltasData', JSON.stringify(faltasData));
+        };
+        xhttp.open("GET", "buscar_alunos.php", true);
+        xhttp.send();
     }
 
-    function salvarDados() {
-        const notasData = Array.from(notasTable.rows)
-            .slice(1)
-            .map(row => ({
-                aluno: row.cells[0].textContent,
-                notas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-            }));
-        const faltasData = Array.from(faltasTable.rows)
-            .slice(1)
-            .map(row => ({
-                aluno: row.cells[0].textContent,
-                faltas: Array.from(row.cells).slice(1, 5).map(cell => cell.firstChild.value)
-            }));
+    // Função para preencher a tabela com os dados dos alunos
+    function preencherTabela(alunos) {
+        var tabela = document.querySelector('.result-table');
 
-        localStorage.setItem('notasData', JSON.stringify(notasData));
-        localStorage.setItem('faltasData', JSON.stringify(faltasData));
-    }
+        alunos.forEach(function(aluno) {
+            var linha = tabela.insertRow();
 
-    if (adicionarAlunosButton) {
-        adicionarAlunosButton.addEventListener('click', function () {
-            const nome = prompt('Digite o nome do aluno:');
-            const sobrenome = prompt('Digite o sobrenome do aluno:');
-            if (nome && sobrenome) {
-                const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
-                const aluno = { nome, sobrenome };
-                alunos.push(aluno);
-                localStorage.setItem('alunos', JSON.stringify(alunos));
-                carregarDados();
-            }
+            // Criar células para cada coluna
+            var celulaId = linha.insertCell(0);
+            var celulaNome = linha.insertCell(1);
+            var celulaSobrenome = linha.insertCell(2);
+            var celulaNascimento = linha.insertCell(3);
+            var celulaEmail = linha.insertCell(4);
+            var celulaTelefone = linha.insertCell(5);
+            var celulaExcluir = linha.insertCell(6);
+
+            // Preencher as células com os dados do aluno
+            celulaId.textContent = aluno.id; // Assumindo que o ID é uma coluna na tabela alunos
+            celulaNome.textContent = aluno.nome;
+            celulaSobrenome.textContent = aluno.sobrenome;
+            celulaNascimento.textContent = aluno.data_nascimento; // Ajuste o nome do campo conforme necessário
+            celulaEmail.textContent = aluno.email;
+            celulaTelefone.textContent = aluno.telefone;
+
+            // Criar botão de exclusão
+            var btnExcluir = document.createElement('button');
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.onclick = function() {
+                excluirAluno(aluno.id); // Chamar a função de exclusão com o ID do aluno
+            };
+            celulaExcluir.appendChild(btnExcluir);
         });
     }
 
-    if (atualizarButton) {
-        atualizarButton.addEventListener('click', function () {
-            salvarDados();
+    // Função para excluir um aluno pelo ID
+    function excluirAluno(id) {
+        // Envia uma requisição para o PHP para excluir o aluno
+        fetch('excluir_aluno.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(response => response.text())
+        .then(text => {
+            alert(text); // Exibe a mensagem de sucesso ou erro
+            // Recarrega a tabela para refletir a exclusão
+            carregarAlunos();
+        })
+        .catch(error => {
+            console.error('Erro ao excluir aluno:', error);
+            alert('Ocorreu um erro ao excluir o aluno.');
         });
     }
 
-    if (editarButton) {
-        editarButton.addEventListener('click', function () {
-            console.log("Editando faltas...");
-        });
-    }
-
-    carregarDados();
+    // Carregar os alunos assim que a página é carregada
+    carregarAlunos();
 });
-
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Carrega os dados do localStorage
-            const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
-
-            // Seleciona a tabela onde os alunos serão exibidos
-            const resultTable = document.querySelector('.result-table');
-
-            // Exibe cada aluno na tabela
-            alunos.forEach(aluno => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><img src="../png/nome.png" alt="nome"></td>
-                    <td>${aluno.nome}</td>
-                    <td>${aluno.sobrenome}</td>
-                    <td>${aluno.dataNascimento}</td>
-                    <td>${aluno.email}</td>
-                    <td>${aluno.telefone}</td>
-                    <td><button class="delete-button" data-id="${aluno.id}"><img src="../png/excluir.png" alt="Excluir"></button></td>`;
-                resultTable.appendChild(row);
-            });
-
-            // Adiciona eventos aos botões de excluir
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    if (confirm('Tem certeza de que deseja excluir este aluno?')) {
-                        const alunoId = button.dataset.id;
-                        let alunosArray = JSON.parse(localStorage.getItem('alunos')) || [];
-                        alunosArray = alunosArray.filter(a => a.id !== alunoId);
-                        localStorage.setItem('alunos', JSON.stringify(alunosArray));
-                        button.closest('tr').remove(); // Remove a linha da tabela
-                    }
-                });
-            });
-
-            // Adiciona eventos aos botões de editar
-            document.querySelectorAll('.edit-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const alunoId = button.dataset.id;
-                    alert(`Editar aluno com ID: ${alunoId}`);
-                    // Implemente a lógica para editar o aluno aqui
-                });
-            });
-        });
-
-        // Adiciona evento ao botão de logout para redirecionar para index.html
-        document.querySelector('.logout-button').addEventListener('click', function () {
-            window.location.href = 'index.html';
-        });
-
-        // Adiciona evento ao botão de professores para redirecionar para cadastro de professores
-        document.querySelector('.proprof-button').addEventListener('click', function () {
-            window.location.href = 'cadastro de professores.html';
-        });
-
-        // Adiciona evento ao botão de inserir alunos para redirecionar para inserir alunos.html
-        document.querySelector('.proinserir-button').addEventListener('click', function () {
-            window.location.href = 'inserir alunos.html';
-        });
-
-        // Adiciona evento ao botão de classes para redirecionar para classes.html
-        document.querySelector('.proclasses-button').addEventListener('click', function () {
-            window.location.href = 'classes.html';
-        });
-
-        // Adiciona evento ao botão de matrícula de alunos para redirecionar para matricula de alunos.html
-        document.querySelector('.promatri-button').addEventListener('click', function () {
-            window.location.href = 'matricula de alunos.html';
-        });
-
-        // Evento para adicionar um novo aluno
-        const addStudentButton = document.querySelector('.add-student-button');
-        addStudentButton.addEventListener('click', function () {
-            // Implemente a lógica para adicionar um novo aluno aqui
-            // Por exemplo, redirecionar para a página de cadastro de alunos
-            window.location.href = 'cadastro_alunos.php';
-        });
- 
