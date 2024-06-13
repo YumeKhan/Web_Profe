@@ -6,87 +6,34 @@ document.addEventListener('DOMContentLoaded', function () {
         headerButtons.classList.toggle('show');
     });
 
-    const logoutButton = document.querySelector('.logout-button');
-    const profButton = document.querySelector('.proprof-button');
-    const inserirButton = document.querySelector('.proinserir-button');
-    const classesButton = document.querySelector('.proclasses-button');
-    const matriButton = document.querySelector('.promatri-button');
+    const buttons = [
+        { selector: '.logout-button', url: 'login.html' },
+        { selector: '.proprof-button', url: 'cadastro de professores.html' },
+        { selector: '.proinserir-button', url: 'inserir alunos.html' },
+        { selector: '.proclasses-button', url: 'classes.html' },
+        { selector: '.promatri-button', url: 'matricula de alunos.html' },
+    ];
 
-    logoutButton.addEventListener('click', function () {
-        window.location.href = 'login.html';
+    buttons.forEach(button => {
+        const element = document.querySelector(button.selector);
+        if (element) {
+            element.addEventListener('click', function () {
+                window.location.href = button.url;
+            });
+        }
     });
 
-    profButton.addEventListener('click', function () {
-        window.location.href = 'cadastro de professores.html';
-    });
-
-    inserirButton.addEventListener('click', function () {
-        window.location.href = 'inserir alunos.html';
-    });
-
-    classesButton.addEventListener('click', function () {
-        window.location.href = 'classes.html';
-    });
-
-    matriButton.addEventListener('click', function () {
-        window.location.href = 'matricula de alunos.html';
-    });
-
-    function preencherTabelaNotas() {
+    // Função para atualizar a nota de um aluno
+    window.atualizarNota = function (input, aluno_id, bimestre) {
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText); // Debug
-                var alunos = JSON.parse(this.responseText);
-                var tbodyNotas = document.querySelector(".notas table tbody");
-                var tbodyFaltas = document.querySelector(".faltas table tbody");
-
-                // Limpa as tabelas antes de preenchê-las novamente
-                tbodyNotas.innerHTML = "";
-                tbodyFaltas.innerHTML = "";
-
-                alunos.forEach(function(aluno) {
-                    var trNotas = document.createElement("tr");
-                    var trFaltas = document.createElement("tr");
-
-                    trNotas.innerHTML = `
-                        <td>${aluno.nome} ${aluno.sobrenome}</td>
-                        <td><input type="text" name="bimestre1" value="${aluno.bimestre1 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre1')"></td>
-                        <td><input type="text" name="bimestre2" value="${aluno.bimestre2 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre2')"></td>
-                        <td><input type="text" name="bimestre3" value="${aluno.bimestre3 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre3')"></td>
-                        <td><input type="text" name="bimestre4" value="${aluno.bimestre4 ?? 'Inserir a Nota'}" onchange="atualizarNota(this, ${aluno.id}, 'bimestre4')"></td>
-                    `;
-
-                    trFaltas.innerHTML = `
-                        <td>${aluno.nome} ${aluno.sobrenome}</td>
-                        <td><input type="text" name="falta1" value="${aluno.falta1 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta1')"></td>
-                        <td><input type="text" name="falta2" value="${aluno.falta2 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta2')"></td>
-                        <td><input type="text" name="falta3" value="${aluno.falta3 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta3')"></td>
-                        <td><input type="text" name="falta4" value="${aluno.falta4 ?? 'Inserir a Nota'}" onchange="atualizarFalta(this, ${aluno.id}, 'falta4')"></td>
-                    `;
-
-                    tbodyNotas.appendChild(trNotas);
-                    tbodyFaltas.appendChild(trFaltas);
-                });
-            } else if (this.readyState == 4) {
-                console.error('Erro ao carregar dados:', this.responseText); // Debug
-            }
-        };
-        xhttp.open("GET", "classes.php", true);
-        xhttp.send();
-    }
-
-    window.atualizarNota = function(input, aluno_id, bimestre) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText); // Debug
-                preencherTabelaNotas();
             } else if (this.readyState == 4) {
                 console.error('Erro ao atualizar nota:', this.responseText); // Debug
             }
         };
-        xhttp.open("POST", "classes.php", true);
+        xhttp.open("POST", "salvar_notas_faltas.php", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         var data = JSON.stringify({
             action: "saveNota",
@@ -97,17 +44,17 @@ document.addEventListener('DOMContentLoaded', function () {
         xhttp.send(data);
     };
 
-    window.atualizarFalta = function(input, aluno_id, bimestre) {
+    // Função para atualizar a falta de um aluno
+    window.atualizarFalta = function (input, aluno_id, bimestre) {
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText); // Debug
-                preencherTabelaNotas();
             } else if (this.readyState == 4) {
                 console.error('Erro ao atualizar falta:', this.responseText); // Debug
             }
         };
-        xhttp.open("POST", "classes.php", true);
+        xhttp.open("POST", "salvar_notas_faltas.php", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         var data = JSON.stringify({
             action: "saveFalta",
@@ -118,6 +65,118 @@ document.addEventListener('DOMContentLoaded', function () {
         xhttp.send(data);
     };
 
-    // Inicializa a tabela de notas e faltas ao carregar a página
-    preencherTabelaNotas();
+    // Função para carregar os alunos do banco de dados
+    function carregarAlunos() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var alunos = JSON.parse(this.responseText);
+                preencherTabelas(alunos);
+            }
+        };
+        xhttp.open("GET", "buscar_alunos.php", true);
+        xhttp.send();
+    }
+
+    const notasTableBody = document.querySelector('.notas table tbody');
+    const faltasTableBody = document.querySelector('.faltas table tbody');
+    const salvarNotasButton = document.querySelector('.adicionar-alunos-button');
+    const salvarFaltasButton = document.querySelector('.editar-button');
+
+    // Função para preencher as tabelas com os dados dos alunos
+    function preencherTabelas(alunos) {
+        alunos.forEach(function (aluno) {
+            // Criar linha para a tabela de notas
+            var linhaNotas = notasTableBody.insertRow();
+            var celulaNomeNotas = linhaNotas.insertCell(0);
+            celulaNomeNotas.textContent = aluno.nome + ' ' + aluno.sobrenome;
+
+            // Criar campos de entrada para notas
+            for (var i = 1; i <= 4; i++) {
+                var celulaNota = linhaNotas.insertCell(i);
+                var inputNota = document.createElement('input');
+                inputNota.type = 'number';
+                inputNota.step = '0.1'; // Permite notas com uma casa decimal
+                inputNota.style.width = '60px'; // Ajuste a largura conforme necessário
+                inputNota.style.boxSizing = 'border-box'; // Inclui o padding e borda na largura total
+                celulaNota.appendChild(inputNota);
+            }
+
+            // Criar linha para a tabela de faltas
+            var linhaFaltas = faltasTableBody.insertRow();
+            var celulaNomeFaltas = linhaFaltas.insertCell(0);
+            celulaNomeFaltas.textContent = aluno.nome + ' ' + aluno.sobrenome;
+
+            // Criar campos de entrada para faltas
+            for (var i = 1; i <= 4; i++) {
+                var celulaFalta = linhaFaltas.insertCell(i);
+                var inputFalta = document.createElement('input');
+                inputFalta.type = 'number';
+                inputFalta.style.width = '60px'; // Ajuste a largura conforme necessário
+                inputFalta.style.boxSizing = 'border-box'; // Inclui o padding e borda na largura total
+                celulaFalta.appendChild(inputFalta);
+            }
+        });
+    }
+
+    // Função para salvar as notas e faltas no banco de dados
+    function salvarDados(event) {
+        event.preventDefault(); // Impede que o formulário seja enviado tradicionalmente
+
+        // Lógica para salvar as notas e faltas no banco de dados
+        console.log('Salvando dados...');
+
+        // Exemplo de como você pode enviar os dados para um backend PHP
+        var notas = [];
+        var faltas = [];
+
+        // Percorrer as linhas da tabela de notas e coletar os valores
+        for (var i = 0; i < notasTableBody.rows.length; i++) {
+            var aluno_id = notasTableBody.rows[i].cells[0].textContent; // Assumindo que o ID do aluno é o primeiro campo
+            var bimestre1 = notasTableBody.rows[i].cells[1].firstChild.value;
+            var bimestre2 = notasTableBody.rows[i].cells[2].firstChild.value;
+            var bimestre3 = notasTableBody.rows[i].cells[3].firstChild.value;
+            var bimestre4 = notasTableBody.rows[i].cells[4].firstChild.value;
+            notas.push({ aluno_id: aluno_id, bimestre1: bimestre1, bimestre2: bimestre2, bimestre3: bimestre3, bimestre4: bimestre4 });
+        }
+
+        // Percorrer as linhas da tabela de faltas e coletar os valores
+        for (var i = 0; i < faltasTableBody.rows.length; i++) {
+            var aluno_id = faltasTableBody.rows[i].cells[0].textContent; // Assumindo que o ID do aluno é o primeiro campo
+            var bimestre1 = faltasTableBody.rows[i].cells[1].firstChild.value;
+            var bimestre2 = faltasTableBody.rows[i].cells[2].firstChild.value;
+            var bimestre3 = faltasTableBody.rows[i].cells[3].firstChild.value;
+            var bimestre4 = faltasTableBody.rows[i].cells[4].firstChild.value;
+            faltas.push({ aluno_id: aluno_id, bimestre1: bimestre1, bimestre2: bimestre2, bimestre3: bimestre3, bimestre4: bimestre4 });
+        }
+
+        // Enviar os dados para o backend
+        fetch('salvar_notas_faltas.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ notas: notas, faltas: faltas })
+        })
+            .then(response => response.text())
+            .then(text => {
+                alert(text); // Exibe a mensagem de sucesso ou erro
+            })
+            .catch(error => {
+                console.error('Erro ao salvar dados:', error);
+                alert('Ocorreu um erro ao salvar os dados.');
+            });
+    }
+
+    // Adicionando eventos para os botões de salvar
+    if (salvarNotasButton) {
+        salvarNotasButton.addEventListener('click', salvarDados);
+    }
+
+    if (salvarFaltasButton) {
+        salvarFaltasButton.addEventListener('click', salvarDados);
+    }
+
+    // Carregar os alunos ao carregar a página
+    carregarAlunos();
 });

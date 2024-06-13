@@ -1,23 +1,25 @@
 <?php
+// buscar_alunos.php
+
 // Configurações de conexão com o banco de dados
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "alunos_db";
+$host = 'localhost';
+$dbname = 'alunos_db';
+$username = 'root';
+$password = '';
 
-// Cria conexão
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Criar a conexão com o banco de dados
+$conn = new mysqli($host, $username, $password, $dbname);
 
-// Verifica conexão
+// Verificar se há algum erro na conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Consulta SQL para selecionar todos os alunos
+// Consulta SQL para buscar os alunos
 $sql = "SELECT id, nome, sobrenome FROM alunos";
 $result = $conn->query($sql);
 
-// Armazenar os resultados em um array
+// Armazenar os alunos em um array
 $alunos = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -25,9 +27,12 @@ if ($result->num_rows > 0) {
     }
 }
 
-// Fechar conexão
+// Fechar a conexão
 $conn->close();
 
-// Codificar o array como JSON
-echo json_encode($alunos);
+// Codificar o array de alunos em JSON
+$json_alunos = json_encode($alunos);
+
+// Imprimir o JSON para que possa ser capturado pelo JavaScript
+echo $json_alunos;
 ?>

@@ -1,7 +1,3 @@
-CREATE DATABASE alunos_db;
-
-USE alunos_db;
-
 CREATE TABLE alunos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,

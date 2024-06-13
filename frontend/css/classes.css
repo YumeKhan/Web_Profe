@@ -4,45 +4,40 @@ body {
     margin: 0;
     padding: 0;
     background-image: url('../png/fundo1.png');
-    background-size: cover; /* para ajustar o tamanho da imagem */
-    background-position: auto; /* para posicionar a imagem */
-    
+    background-size: cover;
+    background-position: auto;
 }
 
 header {
     background-color: #874caf;
     color: white;
     display: flex;
-    flex-wrap: wrap; /* Nova adição para permitir que os elementos sejam envolvidos */
+    flex-wrap: wrap;
     justify-content: space-between;
     padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 2); /* Adiciona sombra na parte inferior */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    
-    
 }
-
-
 
 .header-buttons {
     display: flex;
+    flex-wrap: wrap; /* Permite que os botões sejam empilhados em telas menores */
     gap: 10px;
 }
 
 .proprof-button, .profile-button, .promatri-button, .proinserir-button, .logout-button, .deleteButton, .update-button {
-    background-color: #000000a1;
-    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    background-color: rgba(0, 0, 0, 0.63);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
     border: none;
     color: white;
     padding: 10px;
     cursor: pointer;
     border-radius: 20px;
-    
 }
 
-.proclasses-button, .delete-button{
-    background-color: #d44040a1;
-    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+.proclasses-button, .delete-button {
+    background-color: rgba(212, 64, 64, 0.63);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
     border: none;
     color: white;
     padding: 10px;
@@ -50,61 +45,50 @@ header {
     border-radius: 15px;
 }
 
-
 main {
     display: flex;
-    flex-wrap: wrap; /* Nova adição para permitir que os elementos sejam envolvidos */
+    flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px;
-    
 }
 
 section {
     background-color: rgba(255, 255, 255, 0.815);
     border-radius: 20px;
-    box-shadow: 0 0 0 2px rgb(0, 0, 0); /* Adiciona sombra */
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    width: 45%;
     margin-top: 2%;
-    margin-bottom: 100px; /* Nova adição para criar espaço entre as seções */
-    
+    margin-bottom: 100px;
 }
 
 h2 {
     display: flex;
     align-items: center;
     gap: 10px;
-    
 }
 
 table {
     width: 100%;
-    display: center;
-    
-
+    /* display: center; - Remova essa linha, pois 'display: center' não é uma propriedade CSS válida */
 }
 
 th, td {
-    border: 2px solid #ddd;
     padding: 8px;
     text-align: center;
     box-sizing: border-box;
     border-radius: 10px;
-
 }
 
 th {
-    background-color: #7b80ca57;
-    
+    background-color: rgba(123, 128, 202, 0.34);
 }
 
 input[type="text"] {
     text-align: center;
-    width: calc(100% - 16px); /* Alterado para permitir o preenchimento interno */
+    width: calc(100% - 16px);
     padding: 10px;
     box-sizing: border-box;
     border-radius: 10px;
-
 }
 
 .atualizar-button, .adicionar-alunos-button {
@@ -131,18 +115,23 @@ input[type="text"] {
     display: block;
     width: 100%;
     text-align: center;
-    
 }
 
 @media (max-width: 768px) {
     /* Estilos para telas menores */
-    main {
-        flex-direction: column; /* Alterado para empilhar seções em telas menores */
-        align-items: center; /* Centralizar seções em telas menores */
+    header {
+        flex-direction: column; /* Alterado para empilhar elementos do cabeçalho em telas menores */
+        align-items: center;
     }
 
-    section {
-        width: 90%; /* Alterado para ocupar a largura total em telas menores */
+    .header-buttons {
+        width: 100%; /* Ocupa a largura total em telas menores */
+        justify-content: center; /* Centraliza os botões */
+    }
+
+    .proprof-button, .profile-button, .promatri-button, .proinserir-button, .logout-button, .deleteButton, .update-button, .proclasses-button, .delete-button {
+        width: 100%; /* Botões ocupam a largura total em telas menores */
+        margin-bottom: 10px; /* Espaçamento entre botões */
     }
 }
 
